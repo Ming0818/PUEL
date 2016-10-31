@@ -1,6 +1,6 @@
 % 2.3.1 Extract Prostate Region
 % input: given dataset
-% output: a 2-D matrix with attributes (ADC, KTrans, Kep, PET, T2, label)
+% output: a 2-D matrix with attributes (ADC, KTrans, Kep, PET, T2, label, patient)
 function [output_data] = ExtractProstateRegion(input_data)
 structured_data = cell(size(input_data,1), 1);
 for i = 1: size(input_data,1)
@@ -29,7 +29,9 @@ for i = 1: size(input_data,1)
   PET = PET(remaining_index);
   T2 = T2(remaining_index);
   label = label(remaining_index);
-  structured_data{i,1} = [ADC, KTrans, Kep, PET, T2, label];
+  patient = zeros(size(remaining_index));
+  patient(:,1) = i;
+  structured_data{i,1} = [ADC, KTrans, Kep, PET, T2, label, patient];
 end
 
 % output the result data

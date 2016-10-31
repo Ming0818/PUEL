@@ -2,7 +2,7 @@ load('dataset.mat');
 
 % 2.3.1 Extract Prostate Region
 % input: given dataset
-% output: a 2-D matrix with attributes (ADC, KTrans, Kep, PET, T2, label)
+% output: a 2-D matrix with attributes (ADC, KTrans, Kep, PET, T2, label, patient)
 data = ExtractProstateRegion(dataset);
 
 feature = data(:,1:5);
@@ -14,7 +14,8 @@ label = data(:,6);
 %        option = 2: scale each dimension of the feature vector to unit dynamic range [0, 1]
 %        option = 3: scale the feature vector to unit vector length
 % output: a normalized 2-D feature matrix
-normalized_feature = FeatureNormalization(feature,3);
+normalized_feature = FeatureNormalization(feature,1);
 
-
+%data = [normalized_feature, data(:,6:7)];
+%some = OutlierDetection(data);
 
