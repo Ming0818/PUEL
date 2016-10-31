@@ -6,7 +6,7 @@
          option = 3: scale the feature vector to unit vector length
   output: a normalized 2-D feature matrix
 %}
-function [output_feature] = FeatureNormalization(input_feature, option)
+function output_feature = FeatureNormalization(input_feature, option)
 output_feature = zeros(size(input_feature));
 switch option
   case 1
