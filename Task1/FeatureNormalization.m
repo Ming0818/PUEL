@@ -1,10 +1,11 @@
-% 2.3.2 Feature Normalization
-% input: 2-D feature matrix, option (1~3): apply which normalization method
-%        option = 1: scale each dimension of the feature vector to zero mean and unit variance
-%        option = 2: scale each dimension of the feature vector to unit dynamic range [0, 1]
-%        option = 3: scale the feature vector to unit vector length
-% output: a normalized 2-D feature matrix
-
+%{ 
+  2.3.2 Feature Normalization
+  input: 2-D feature matrix, option (1~3): apply which normalization method
+         option = 1: scale each dimension of the feature vector to zero mean and unit variance
+         option = 2: scale each dimension of the feature vector to unit dynamic range [0, 1]
+         option = 3: scale the feature vector to unit vector length
+  output: a normalized 2-D feature matrix
+%}
 function [output_feature] = FeatureNormalization(input_feature, option)
 output_feature = zeros(size(input_feature));
 switch option
