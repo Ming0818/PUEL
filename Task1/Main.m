@@ -25,6 +25,6 @@ feature = data(:,1:5);
 %}
 normalized_feature = FeatureNormalization(feature,1);
 
-final_data = [normalized_feature, data(:,6:7)];
+data = [normalized_feature, data(:,6:7)];
 
 
