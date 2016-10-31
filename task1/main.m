@@ -1,14 +1,30 @@
-%This is the main script of Task1
-load('dataset')
-original_sample = cellfun(@(x) GetFeature(x.Image, x.LabelsA, x.LabelsB), dataset, 'UniformOutput', false);
+%{
+    Task1: Prostate cancer segmentation based on MRI and PET images
+    author: Shou,Zhenkai  Yang,Jiahuan  Yang,Lirong
+    Purpose: Build a classifier to automatically separate the cancer region
+    Date: 31-10-2016 ¡ª¡ª 10-02-2017
+%}
+load('dataset.mat');
 
-%combine 14 groups of samples into 1 group
-combined_sample = [];
-for n = 1:14
-    combined_sample = [combined_sample; original_sample{n,1}];
-end
-combined_feature = combined_sample(:, 1:5);
-label = combined_sample(:,6);
+%{ 
+  2.3.1 Extract Prostate Region
+  input: given dataset
+  output: a 2-D matrix with attributes (ADC, KTrans, Kep, PET, T2, label, patient)
+%}
+data = ExtractProstateRegion(dataset);
 
-%feature normalization
-normalized_feature = varfun(@(x) fn1(x), combined_feature);
+feature = data(:,1:5);
+
+%{ 
+  2.3.2 Feature Normalization
+  input: 2-D feature matrix, option (1~3): apply which normalization method
+         option = 1: scale each dimension of the feature vector to zero mean and unit variance
+         option = 2: scale each dimension of the feature vector to unit dynamic range [0, 1]
+         option = 3: scale the feature vector to unit vector length
+  output: a normalized 2-D feature matrix
+%}
+normalized_feature = FeatureNormalization(feature,1);
+
+data = [normalized_feature, data(:,6:7)];
+
+
