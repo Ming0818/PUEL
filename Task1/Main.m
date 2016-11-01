@@ -1,6 +1,6 @@
 %{
     Task1: Prostate cancer segmentation based on MRI and PET images
-    author: Shou,Zhenkai  Yang,Jiahuan  Yang,Lirong
+    Author: Shou,Zhenkai  Yang,Jiahuan  Yang,Lirong
     Purpose: Build a classifier to automatically separate the cancer region
     Date: 31-10-2016 ¡ª¡ª 10-02-2017
 %}
@@ -11,9 +11,9 @@ load('dataset.mat');
   input: given dataset
   output: a 2-D matrix with attributes (ADC, KTrans, Kep, PET, T2, label, patient)
 %}
-data = ExtractProstateRegion(dataset);
+data_original = ExtractProstateRegion(dataset);
 
-feature = data(:,1:5);
+feature_original = data_original(:,1:5);
 
 %{ 
   2.3.2 Feature Normalization
@@ -23,8 +23,26 @@ feature = data(:,1:5);
          option = 3: scale the feature vector to unit vector length
   output: a normalized 2-D feature matrix
 %}
-normalized_feature = FeatureNormalization(feature,1);
+feature_normalized = FeatureNormalization(feature_original,1);
 
-data = [normalized_feature, data(:,6:7)];
+data_normalized = [feature_normalized, data_original(:,6:7)];
+
+%{ 
+  2.3.3 Outlier detection and removal
+  input: 2-D feature matrix,
+         confidence: p-value in inverse chi-square cdf, it ranges [0,1] 
+         option (1~2): apply which mahalanobis distance
+         option = 1: apply the normal mahalanobis distance to remove the outlier
+         option = 2: apply the robust mahalanobis distance to remove the outlier
+  output: a matrix without outlier samples
+%}
+
+confidence = 0.95; %set confidence
+data_without_outlier = OutlierRemoval(data_normalized, confidence, 1);
 
 
+%{
+  2.2.4 Data set partitioning
+  Partition the data set into a training set(patient 1~11) and a validation set( patient 12~14)
+%}
+[data_train, data_validation] = DataSetPartition(data_without_outlier); 
