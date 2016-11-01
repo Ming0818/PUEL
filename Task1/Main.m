@@ -25,7 +25,7 @@ feature_original = data_original(:,1:5);
 %}
 feature_normalized = FeatureNormalization(feature_original,1);
 
-data_normalized1 = [feature_normalized, data_original(:,6:7)];
+data_normalized = [feature_normalized, data_original(:,6:7)];
 
 %{ 
   2.3.3 Outlier detection and removal
